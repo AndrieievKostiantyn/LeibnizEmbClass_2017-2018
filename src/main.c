@@ -13,15 +13,18 @@
 #include "DL/drvRCC.h"
 #include "DL/drvSysClock.h"
 #include "DL/drvGPIO.h"
+#include "DL/drvTrafficLight.h"
 
 void BSP_Init(void);
 
 int main(void) {
 	BSP_Init();
 
-	while(1) {
 
+	while(1) {
+		drvTrafficLight_Run();
 	}
+
 }
 
 void BSP_Init(void) {
