@@ -36,6 +36,7 @@
 "StdPeriph_Driver/src/stm32f4xx_usart.o"
 "StdPeriph_Driver/src/stm32f4xx_wwdg.o"
 "src/DL/drvGPIO.o"
+"src/DL/drvIWDG.o"
 "src/DL/drvRCC.o"
 "src/DL/drvSysClock.o"
 "src/DL/drvTrafficLight.o"
