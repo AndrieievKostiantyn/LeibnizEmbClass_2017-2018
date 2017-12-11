@@ -14,6 +14,7 @@
 #include "DL/drvSysClock.h"
 #include "DL/drvGPIO.h"
 #include "DL/drvTrafficLight.h"
+#include "DL/drvIWDG.h"
 
 void BSP_Init(void);
 
@@ -22,6 +23,7 @@ int main(void) {
 
 
 	while(1) {
+		drvIWDG_Run();
 		drvTrafficLight_Run();
 	}
 
@@ -31,4 +33,5 @@ void BSP_Init(void) {
 	drvRCC_Init();
 	drvSysClock_Init();
 	drvGPIO_Init();
+	drvIWDG_Init();
 }

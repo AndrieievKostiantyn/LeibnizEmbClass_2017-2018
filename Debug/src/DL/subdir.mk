@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/DL/drvGPIO.c \
+../src/DL/drvIWDG.c \
 ../src/DL/drvRCC.c \
 ../src/DL/drvSysClock.c \
 ../src/DL/drvTrafficLight.c 
 
 OBJS += \
 ./src/DL/drvGPIO.o \
+./src/DL/drvIWDG.o \
 ./src/DL/drvRCC.o \
 ./src/DL/drvSysClock.o \
 ./src/DL/drvTrafficLight.o 
 
 C_DEPS += \
 ./src/DL/drvGPIO.d \
+./src/DL/drvIWDG.d \
 ./src/DL/drvRCC.d \
 ./src/DL/drvSysClock.d \
 ./src/DL/drvTrafficLight.d 
