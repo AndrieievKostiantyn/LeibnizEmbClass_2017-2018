@@ -25,9 +25,8 @@
  * */
 
 typedef enum {
-	low,
-	high
-}drvKeyboard_activeState;
+	low, high
+} drvKeyboard_activeState;
 
 /* *
  * Describes buttons' configuration.
@@ -41,17 +40,17 @@ typedef struct {
 	uint32_t saveTime;
 	uint32_t holdTime;
 	drvKeyboard_keyEvent_t lastEvent;
-}drvKeyboard_confTable;
+	drvGPIO_List_t gpioKeyName;
+} drvKeyboard_confTable;
 
 /* *
  * Change this to configure all the necessary buttons.
  * By default, this block configured for 3 buttons being released and having a low active state.
  * */
 drvKeyboard_confTable keyboard[keyAmount] = {
-		{keyLeft, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0},
-		{keyCentre, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0},
-		{keyRight, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0}
-};
+		{ keyLeft, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0, drvGPIO_Button_0 },
+		{ keyCentre, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0, drvGPIO_Button_1 },
+		{ keyRight, low, isReleased, KEY_COUNTER_MIN, 0, HOLD_TIME_DEFAULT, 0, drvGPIO_Button_2 } };
 
 /* To prevent contact bounce */
 static void contactBounceElimination(uint32_t keyName);
@@ -64,50 +63,42 @@ drvKeyboard_keyEvent_t newKeyState = 0;
  * @retval		last event of a button, e.g. isPressed, isHeld etc.
  * @note		use this method to run the keyboard driver
  * */
-void drvKeyboard_Run(void)
-{
+void drvKeyboard_Run(void) {
 	uint32_t keyName = 0;
 
-	for (keyName = keyLeft; keyName < keyAmount; keyName++)
-	{
+	for (keyName = keyLeft; keyName < keyAmount; keyName++) {
 		newKeyState = keyboard[keyName].currentState;
 
 		contactBounceElimination(keyName);
 
-		switch (keyboard[keyName].currentState)
-		{
-			case isReleased:
-				if (keyboard[keyName].counter > KEY_COUNTER_PRESSED)
-				{
-					newKeyState = isPressed;
-					keyboard[keyName].lastEvent = isPressed;
-					keyboard[keyName].saveTime = drvSysClock_GetTime();
-				}
-				break;
+		switch (keyboard[keyName].currentState) {
+		case isReleased:
+			if (keyboard[keyName].counter > KEY_COUNTER_PRESSED) {
+				newKeyState = isPressed;
+				keyboard[keyName].lastEvent = isPressed;
+				keyboard[keyName].saveTime = drvSysClock_GetTime();
+			}
+			break;
 
-			case isPressed:
-				if (keyboard[keyName].counter < KEY_COUNTER_RELEASED)
-				{
-					newKeyState = isReleased;
-					keyboard[keyName].lastEvent = isReleased;
-				}
-				else if (drvSysClock_isTImeSpent(keyboard[keyName].saveTime, keyboard[keyName].holdTime))
-				{
-					keyboard[keyName].saveTime = drvSysClock_GetTime();
-					keyboard[keyName].lastEvent = isHeld;
-				}
-				break;
+		case isPressed:
+			if (keyboard[keyName].counter < KEY_COUNTER_RELEASED) {
+				newKeyState = isReleased;
+				keyboard[keyName].lastEvent = isReleased;
+			} else if (drvSysClock_isTimeSpent(keyboard[keyName].saveTime, keyboard[keyName].holdTime)) {
+				keyboard[keyName].saveTime = drvSysClock_GetTime();
+				keyboard[keyName].lastEvent = isHeld;
+			}
+			break;
 
-			default:
-				keyboard[keyName].counter = KEY_COUNTER_MIN;
-				keyboard[keyName].currentState = isReleased;
+		default:
+			keyboard[keyName].counter = KEY_COUNTER_MIN;
+			keyboard[keyName].currentState = isReleased;
 		}
 		keyboard[keyName].currentState = newKeyState;
 	}
 }
 
-drvKeyboard_keyEvent_t drv_Keyboard_getLastEvent(drvKeyboard_keyList_t keyName)
-{
+drvKeyboard_keyEvent_t drv_Keyboard_getLastEvent(drvKeyboard_keyList_t keyName) {
 	drvKeyboard_keyEvent_t event = 0;
 
 	event = keyboard[keyName].lastEvent;
@@ -115,8 +106,8 @@ drvKeyboard_keyEvent_t drv_Keyboard_getLastEvent(drvKeyboard_keyList_t keyName)
 	return event;
 }
 
-void drvKeyboard_setHoldTime(drvKeyboard_keyList_t keyName, uint32_t newHoldTime)
-{
+void drvKeyboard_setHoldTime(drvKeyboard_keyList_t keyName,
+		uint32_t newHoldTime) {
 	keyboard[keyName].holdTime = newHoldTime;
 }
 
@@ -125,33 +116,26 @@ void drvKeyboard_setHoldTime(drvKeyboard_keyList_t keyName, uint32_t newHoldTime
  * 			If the pin state is the same as button active state -> count up,
  * 			If it is different -> count down.
  * */
-void contactBounceElimination(uint32_t keyName)
-{
+void contactBounceElimination(uint32_t keyName) {
 	drvKeyboard_activeState keyState = 0;
 
-	if (drvGPIO_ReadPin(keyName) == 1)
-	{
+	if (drvGPIO_ReadPin(keyboard[keyName].gpioKeyName) == 1) {
 		keyState = high;
-	} else
-	{
+	} else {
 		keyState = low;
 	}
 
-	if (keyState == keyboard[keyName].activeState)
-	{
+	if (keyState == keyboard[keyName].activeState) {
 		keyboard[keyName].counter++;
-	} else
-	{
+	} else {
 		keyboard[keyName].counter--;
 	}
 
-	if (keyboard[keyName].counter > KEY_COUNTER_MAX)
-	{
+	if (keyboard[keyName].counter > KEY_COUNTER_MAX) {
 		keyboard[keyName].counter = KEY_COUNTER_MAX;
 	}
 
-	if (keyboard[keyName].counter < KEY_COUNTER_MIN)
-	{
+	if (keyboard[keyName].counter < KEY_COUNTER_MIN) {
 		keyboard[keyName].counter = KEY_COUNTER_MIN;
 	}
 }

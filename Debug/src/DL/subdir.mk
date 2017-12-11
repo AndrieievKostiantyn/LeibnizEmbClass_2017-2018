@@ -6,6 +6,7 @@
 C_SRCS += \
 ../src/DL/drvGPIO.c \
 ../src/DL/drvIWDG.c \
+../src/DL/drvKeyboard.c \
 ../src/DL/drvRCC.c \
 ../src/DL/drvSysClock.c \
 ../src/DL/drvTrafficLight.c 
@@ -13,6 +14,7 @@ C_SRCS += \
 OBJS += \
 ./src/DL/drvGPIO.o \
 ./src/DL/drvIWDG.o \
+./src/DL/drvKeyboard.o \
 ./src/DL/drvRCC.o \
 ./src/DL/drvSysClock.o \
 ./src/DL/drvTrafficLight.o 
@@ -20,6 +22,7 @@ OBJS += \
 C_DEPS += \
 ./src/DL/drvGPIO.d \
 ./src/DL/drvIWDG.d \
+./src/DL/drvKeyboard.d \
 ./src/DL/drvRCC.d \
 ./src/DL/drvSysClock.d \
 ./src/DL/drvTrafficLight.d 

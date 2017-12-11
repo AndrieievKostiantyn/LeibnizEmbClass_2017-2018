@@ -21,6 +21,9 @@ typedef enum{
 	drvGPIO_LED_G_1,
 	drvGPIO_LED_R_2,
 	drvGPIO_LED_G_2,
+	drvGPIO_Button_0,
+	drvGPIO_Button_1,
+	drvGPIO_Button_2,
 	drvGPIO_List_Amount
 }drvGPIO_List_t;
 
