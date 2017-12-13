@@ -27,7 +27,7 @@ src/main.o: ../src/main.c \
  D:/Developer/Electrical_Engineering/LeibnizEmbClass_2017-2018/StdPeriph_Driver/inc/misc.h \
  D:/Developer/Electrical_Engineering/LeibnizEmbClass_2017-2018/StdPeriph_Driver/inc/stm32f4xx_flash_ramfunc.h \
  ../src/DL/drvRCC.h ../src/DL/drvSysClock.h ../src/DL/drvGPIO.h \
- ../src/DL/drvTrafficLight.h ../src/DL/drvIWDG.h
+ ../src/DL/drvIWDG.h ../src/DL/drvKeyboard.h ../src/UL/ulRingBuffer.h
 
 D:/Developer/Electrical_Engineering/LeibnizEmbClass_2017-2018/CMSIS/device/stm32f4xx.h:
 
@@ -89,6 +89,8 @@ D:/Developer/Electrical_Engineering/LeibnizEmbClass_2017-2018/StdPeriph_Driver/i
 
 ../src/DL/drvGPIO.h:
 
-../src/DL/drvTrafficLight.h:
-
 ../src/DL/drvIWDG.h:
+
+../src/DL/drvKeyboard.h:
+
+../src/UL/ulRingBuffer.h:

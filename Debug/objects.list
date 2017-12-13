@@ -41,6 +41,7 @@
 "src/DL/drvRCC.o"
 "src/DL/drvSysClock.o"
 "src/DL/drvTrafficLight.o"
+"src/UL/ulRingBuffer.o"
 "src/main.o"
 "src/stm32f4xx_it.o"
 "src/syscalls.o"

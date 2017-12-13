@@ -1,9 +1,10 @@
 /*
+
  * drvTrafficLight.c
  *
  *  Created on: 04.12.2017
  *      Author: kostiantyn_andreev
- */
+
 
 #include "drvTrafficLight.h"
 #include "drvSysClock.h"
@@ -100,3 +101,4 @@ void drvTrafficLight_StateMachine(drvTrafficLight_List TrafficLight_Name) {
 		break;
 	}
 }
+*/

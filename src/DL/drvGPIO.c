@@ -19,16 +19,12 @@ typedef struct {
 } drvGPIO_ConfigTable_t;
 
 drvGPIO_ConfigTable_t drvGPIO_ConfigTable[drvGPIO_List_Amount]={
-		{PORT_A, 5},
-		{PORT_C, 13},
-		{PORT_A, 0},
-		{PORT_A, 1},
-		{PORT_A, 4},
-		{PORT_B, 5},
-		{PORT_B, 6},
-		{PORT_B, 7},
-		{PORT_B, 8},
-		{PORT_B, 10}
+		{PORT_C, 3},
+		{PORT_C, 1},
+		{PORT_C, 0},
+		{PORT_C, 12},
+		{PORT_B, 9},
+		{PORT_C, 10}
 };
 
 void drvGPIO_Init(void) {
@@ -36,35 +32,36 @@ void drvGPIO_Init(void) {
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 
-	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitTypeDef GPIO_ButtonInitStruct;
+	GPIO_InitTypeDef GPIO_LED_InitStruct;
+	GPIO_InitTypeDef GPIO_ButtonInitStruct_B;
+	GPIO_InitTypeDef GPIO_ButtonInitStruct_C;
 
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_4;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+	GPIO_LED_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_LED_InitStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3;
+	GPIO_LED_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_LED_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_LED_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
 
-	GPIO_ButtonInitStruct.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_ButtonInitStruct.GPIO_Pin = GPIO_Pin_13;
-	GPIO_ButtonInitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_ButtonInitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_ButtonInitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+	GPIO_Init(GPIOC, &GPIO_LED_InitStruct);
+	GPIO_ResetBits(GPIOC, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3);
 
-	GPIO_Init(GPIOA, &GPIO_InitStruct);
-	GPIO_Init(GPIOC, &GPIO_ButtonInitStruct);
-	GPIO_ResetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_4);
+	GPIO_ButtonInitStruct_B.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_ButtonInitStruct_B.GPIO_Pin = GPIO_Pin_9;
+	GPIO_ButtonInitStruct_B.GPIO_OType = GPIO_OType_PP;
+	GPIO_ButtonInitStruct_B.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_ButtonInitStruct_B.GPIO_Speed = GPIO_Speed_25MHz;
 
+	GPIO_Init(GPIOB, &GPIO_ButtonInitStruct_B);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
 
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_10;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+	GPIO_ButtonInitStruct_C.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_ButtonInitStruct_C.GPIO_Pin = GPIO_Pin_9;
+	GPIO_ButtonInitStruct_C.GPIO_OType = GPIO_OType_PP;
+	GPIO_ButtonInitStruct_C.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_ButtonInitStruct_C.GPIO_Speed = GPIO_Speed_25MHz;
 
-	GPIO_Init(GPIOB, &GPIO_InitStruct);
-	GPIO_ResetBits(GPIOB, GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_10);
-
+	GPIO_Init(GPIOC, &GPIO_ButtonInitStruct_C);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
 }
 
 void drvGPIO_SetPin(drvGPIO_List_t pinName) {
